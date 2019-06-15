@@ -8,6 +8,24 @@ module.exports = {
   /* *** GET ENDPOINTS *** */
   login: (req, res) => res.render('auth/login'),
   register: (req, res) => res.render('auth/register'),
+  vote: (req, res) => {
+    const newvote = new Vote({
+              name: req.body.party,
+              vote: 1
+    });                
+
+    User.update({
+            "email" : 'b@b.com'}
+            ,{
+                $set: { "voted" : true}
+        }, function (err, success) {
+            if (err) {
+                res.send(err);
+            } else {
+              res.send(req.body);
+            }
+        });
+  },
   logout: (req, res) => {
     req.logout();
     res.redirect('/auth/login');
@@ -15,7 +33,7 @@ module.exports = {
   secret: (req, res) => res.render('auth/secret'),
   /* *** POST ENDPOINTS *** */
   postRegister: (req, res) => {
-      let errors = [];
+    let errors = [];
 
     if (req.body.password != req.body.rpassword)
       errors.push({text: 'Password do not match'});
