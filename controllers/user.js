@@ -15,6 +15,22 @@ module.exports = {
   secret: (req, res) => res.render('auth/secret'),
   /* *** POST ENDPOINTS *** */
   postRegister: (req, res) => {
+      let errors = [];
+
+    if (req.body.password != req.body.rpassword)
+      errors.push({text: 'Password do not match'});
+    if (req.body.password.length < 4)
+      errors.push({text: 'Password must be at least 4 characters!'});
+    // verify if errors exist
+    if (errors.length > 0) {
+      res.render('auth/register', {
+        errors,
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        rpassword: req.body.rpassword
+      });
+    }  else {
       User.findOne({email: req.body.email})
         .then(user => {
           if (user) {
@@ -41,6 +57,7 @@ module.exports = {
             });
           }
         });
+      }
   },
   postLogin: (req, res, next) => {
     passport.authenticate('local', {
