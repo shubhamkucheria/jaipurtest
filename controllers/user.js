@@ -9,6 +9,20 @@ module.exports = {
     res.redirect('/auth/login');
   },
   /*  POST ENDPOINTS  */
-  postRegister: (req, res) => res.redirect('/auth/login');,
+  postRegister: (req, res) => {
+   
+    const newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      voted: false
+    });
+           
+      newUser.save()
+        .then(user => {
+          console.log(`User ${user.name} register!`);
+          res.redirect('/auth/login');
+      })
+  },
   postLogin: (req, res, next) =>  res.redirect('/auth/secret');    
 };
