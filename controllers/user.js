@@ -12,11 +12,11 @@ module.exports = {
   postRegister: (req, res) => {
    
     const newUser = new User({
-      name: 'test',
-      email: 'test@test.com',
-      password: 'test@test.com',
-      voted: false
-    });
+              name: req.body.name,
+              email: req.body.email,
+              password: req.body.password,
+              voted: false
+            });
            
       newUser.save()
         .then(user => {
