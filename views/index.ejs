@@ -1,3 +1,4 @@
+<% include partials/header %>
   <div class="container mt-5">
     <h1 class="text-center"><%= title %></h1>
     <small class="author">by Shubham</small>
@@ -6,4 +7,24 @@
       <li><a href="/auth/login">Login</a></li>
       <li><a href="/auth/logout">Logout</a></li>
     </ul>
+    <div class="post">
+      <a href="/auth/partyvote" class="vote">Vote link</a>
+      <button onclick="myFunction()">Click me</button>
+      <p id="demo"></p>
+      <form action="/auth/partyvote" method="post">
+      <select name="party">
+        <option value="BJP">BJP</option>
+        <option value="CONGRESS">CONGRESS</option>
+        <option value="AAP">AAP</option>
+      </select>
+      <input type="submit" value="Submit">
+    </form>
+
+    </div>
   </div>
+<% include partials/footer %>
+<script>
+function myFunction() {
+  document.getElementById("demo").innerHTML = "Hello World";
+}
+</script>
