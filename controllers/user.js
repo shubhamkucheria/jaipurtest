@@ -12,9 +12,9 @@ module.exports = {
   postRegister: (req, res) => {
    
     const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
+      name: 'test',
+      email: 'test@test.com',
+      password: 'test@test.com',
       voted: false
     });
            
