@@ -1,10 +1,11 @@
 <% include ../partials/header %>
 <div class="col-md-6 mx-auto">
       <div class="card card-body">
-			<div class="container mt-5">
-			    <h1 class="text-center"><%= status %></h1>
+			<div class="container mt-5 class="text-center"">
+			    <h1 ><%= status %></h1>
 			    <% for(var i = 0; i < party.length; ++i) {%>
-			  - <%=party[i].name + ' with ' + party[i].vote + 'votes' %><% } %>
+			  <br>        
+         <%=party[i].name + ' with ' + party[i].vote + ' votes' %><% } %>
 			    </div>
 			<a href="/auth/logout" class="logout">Logout</a>
 			    <a href="/" class="logout">Back to Home</a>
