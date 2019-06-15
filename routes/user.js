@@ -1,16 +1,16 @@
 const router = require('express').Router();
 
-const userController = require('../controllers/user');
+const electionController = require('../controllers/electionController');
 const {ensureGuest, ensureAuthenticated} = require('../libs/auth');
 
 /* *** GET ENDPOINTS *** */
-router.post('/vote', ensureGuest, userController.vote);
-router.post('/partyvote', ensureGuest, userController.vote);
-router.get('/login', ensureGuest, userController.login);
-router.get('/register', ensureGuest, userController.register);
-router.get('/logout', ensureAuthenticated, userController.logout);
-router.get('/secret', ensureAuthenticated, userController.secret);
+router.post('/vote', ensureGuest, electionController.vote);
+router.post('/partyvote', ensureGuest, electionController.vote);
+router.get('/login', ensureGuest, electionController.login);
+router.get('/register', ensureGuest, electionController.register);
+router.get('/logout', ensureAuthenticated, electionController.logout);
+router.get('/secret', ensureAuthenticated, electionController.secret);
 /* *** POST ENDPOINTS *** */
-router.post('/register', userController.postRegister);
-router.post('/login', userController.postLogin);
+router.post('/register', electionController.postRegister);
+router.post('/login', electionController.postLogin);
 module.exports = router;

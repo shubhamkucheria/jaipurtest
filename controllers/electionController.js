@@ -8,21 +8,48 @@ module.exports = {
   /* *** GET ENDPOINTS *** */
   login: (req, res) => res.render('auth/login'),
   register: (req, res) => res.render('auth/register'),
-  vote: (req, res) => {
-    const newvote = new Vote({
-              name: req.body.party,
-              vote: 1
-    });                
+  status: (req, res) => {
+    Vote.find()
+        .then(partyDetails => {
+          
+            console.log('partyDetails', partyDetails);
+            res.render('auth/partyvote', {
+                  status: 'Voting Status', party: partyDetails})
+          
+        });
+    
+  },
+  partyvote: (req, res) => {
 
+    Vote.find()
+        .then(partyDetails => {
+          
+            console.log('partyDetails', partyDetails);
+            res.send(partyDetails);
+          
+        });
+  },
+  vote: (req, res) => {  
+
+                    
+    
     User.update({
-            "email" : 'b@b.com'}
+            "email" : req.user.email}
             ,{
                 $set: { "voted" : true}
         }, function (err, success) {
             if (err) {
                 res.send(err);
             } else {
-              res.send(req.body);
+              Vote.update({
+            "name" : req.body.party}
+            ,{
+                $inc: { "vote" : 1}
+        }, function (err, success) {
+            console.log('hello vote update');
+            res.render('auth/vote', {
+               acknowledgeMsg: 'Thanks for your valuable vote'})
+        });
             }
         });
   },
@@ -30,7 +57,10 @@ module.exports = {
     req.logout();
     res.redirect('/auth/login');
   },
-  secret: (req, res) => res.render('auth/secret'),
+  secret: (req, res) => {
+    console.log('coming to secret page = ', req.user.voted );    
+    res.render('auth/secret', { alreadyVoted: req.user.voted})
+  },
   /* *** POST ENDPOINTS *** */
   postRegister: (req, res) => {
     let errors = [];
