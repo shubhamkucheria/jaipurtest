@@ -1,14 +1,134 @@
 <% include ../partials/header %>
 <div class="col-md-6 mx-auto">
-      <div class="card card-body">
+
+      
 			<div class="container mt-5 class="text-center"">
 			    <h1 ><%= status %></h1>
+			    <button onclick="getYo(<%= status %>)">Check Status</button>
+			    <div id="app" class="container text-center" style="background-color: white;">
 			    <% for(var i = 0; i < party.length; ++i) {%>
-			  <br>        
-         <%=party[i].name + ' with ' + party[i].vote + ' votes' %><% } %>
-			    </div>
-			<a href="/auth/logout" class="logout">Logout</a>
+			  	<br>        
+         		<%=party[i].name + ' with ' + party[i].vote + ' votes' %><% } %>
+			  	<div id="piechart">
+			  	</div>
+		</div>
+			    
+			    
+         		    
 			    <a href="/" class="logout">Back to Home</a>
+      </div>
+      <script>
+      var data = [];
+      function getPercent(val, total) {
+      	return (val/total)*100;
+      }
 
-      </div>
-      </div>
+      function getYo(val) {
+      	console.log('vallllll', val);
+      }
+
+
+      function getTotal (partyData) {
+		let result = partyData.reduce(
+		  (a, c) => (Object.keys(c).forEach(k => (a[k] = (a[k] || 0) + c[k])), a), {}
+		);
+		return result.vote;
+      }
+
+
+      function setData(partyData) {
+      	var total = getTotal(partyData);
+	      partyData.forEach(item => {
+	      	let tempData = [];
+	      	tempData.push(item.name);
+	      	tempData.push(getPercent(item.vote, total))
+			data.push(tempData);
+	      });
+
+      
+		// data = [
+		//   ['CONGRESS', 50],
+		//   ['BJP', 30],
+		//   ['AAP', 20]
+		// ];
+      } 
+
+var chart = c3.generate({
+    bindto: '#piechart',
+    data: {
+        columns: data,
+        type: 'pie'
+    },
+    legend: {
+        show: false
+    },
+    tooltip: {
+      position: function (data, width, height, element) {
+        return {top: 0, right: 0}
+      }
+    },
+    onrendered: function(){
+      var self = this;
+      console.log(self)
+      
+      d3Pie = d3.select('.c3-chart-arcs');
+      pieSize = d3Pie.node().getBBox();
+      pieTransform = d3.transform(d3Pie.attr("transform"));
+
+      // MODIFY PIE POSITION
+      var posX = 0+pieSize.width/1.5;
+      var posY = pieTransform.translate[1];
+      d3Pie.attr('transform', 'translate('+posX+','+posY+')')
+    }
+});
+
+// ADD CUSTOM LEGEND
+var d3legend = d3.select('.c3-chart').append('g')
+  .attr('transform', 'translate('+(pieSize.width + pieSize.width/3)+',100)')
+  .attr('class', 'custom-legend')
+  .selectAll('g')
+  .data(data)
+  .enter()
+  .append('g')
+  .attr('transform', function(d, i){
+    return 'translate(0, '+i*60+')';
+  })
+  .attr('data-id', function (d) { 
+    return d[0]; 
+  })
+  .on('mouseover', function (id) {
+    chart.focus(id);
+  })
+  .on('mouseout', function (id) {
+    chart.revert();
+  })
+
+var legendRect = d3legend.append('rect')
+  .attr('class', function(d, i){
+    return 'custom-legend-color is-'+d[0];
+  })
+  .attr('width', 40)
+  .attr('height', 40)
+  .attr('rx', 4)
+  .attr('ry', 4)
+  .style('fill', function(d, i){
+    return chart.color(d[0])
+  });
+
+var legendValue = d3legend.append('text')
+  .attr('class', 'custom-legend-value')
+  .attr('x', 50)
+  .text(function(d, i){
+    return (d[1]/100)*100 + '%';
+  });
+
+var legendTitle = d3legend.append('text')
+  .attr('class', 'custom-legend-title')
+  .attr('x', 50)
+  .attr('y', 30)
+  .attr('font-size', '15px')
+  .text(function(d, i){
+    return d[0];
+  });    
+</script>
+<% include ../partials/footer %>
