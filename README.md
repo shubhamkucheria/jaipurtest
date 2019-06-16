@@ -5,6 +5,7 @@ jaipurtest is mini prototype of basic online voting system.
 ## Live Demo
 
 [https://jaipur-assignment.herokuapp.com/](https://jaipur-assignment.herokuapp.com/)
+![testjaipur](https://github.com/shubhamkucheria/jaipurtest/blob/master/testjaipur.gif)
 
 
 ## Instalation
