@@ -31,8 +31,9 @@
          		    
 			    
       </div>
-      <script>
-      var party = <%- JSON.stringify(party) %>
+      <script> 
+      var party = <%- JSON.stringify(party) %>;
+      if(party.length) {
       total = 0;
       party.forEach(item => {
         total = total+item.vote;
@@ -117,6 +118,9 @@ var legendTitle = d3legend.append('text')
   .attr('font-size', '15px')
   .text(function(d, i){
     return d[0];
-  });    
+  });
+      
+      }
+      
       </script>
 <% include ../partials/footer %>
