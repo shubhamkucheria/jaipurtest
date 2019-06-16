@@ -3,20 +3,28 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const User = require('../models/User');
 const Vote = require('../models/Vote');
+const request = require('request');
+const {WEATHER_URL_KEY} = require('../config/');
 
 module.exports = {
   /* *** GET ENDPOINTS *** */
   login: (req, res) => res.render('auth/login'),
   register: (req, res) => res.render('auth/register'),
   status: (req, res) => {
-    Vote.find()
+
+    if(req.user.isadmin) {
+      Vote.find()
         .then(partyDetails => {
           
             console.log('partyDetails', partyDetails);
-            res.render('auth/partyvote', {
-                  status: 'Voting Status', party: partyDetails})
-          
+            res.render('auth/partyvote', {isadmin: req.user.isadmin,
+                  status: 'Voting Status', party: partyDetails})          
         });
+    } else {
+      res.render('auth/partyvote', {isadmin: req.user.isadmin,
+                  status: '', party: []})
+    }
+    
     
   },
   partyvote: (req, res) => {
@@ -59,7 +67,7 @@ module.exports = {
   },
   secret: (req, res) => {
     console.log('coming to secret page = ', req.user.voted );    
-    res.render('auth/secret', { alreadyVoted: req.user.voted})
+    res.render('auth/secret', { alreadyVoted: req.user.voted, isadmin: req.user.isadmin})
   },
   /* *** POST ENDPOINTS *** */
   postRegister: (req, res) => {
@@ -90,7 +98,8 @@ module.exports = {
               name: req.body.name,
               email: req.body.email,
               password: req.body.password,
-              voted: false
+              voted: false,
+              isadmin: false
             });
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -109,7 +118,6 @@ module.exports = {
       }
   },
   postLogin: (req, res, next) => {
-    console.log('postLOgin');
     passport.authenticate('local', {
      successRedirect: '/auth/secret',
      failureRedirect: '/auth/login'

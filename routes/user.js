@@ -10,7 +10,7 @@ router.get('/login', ensureGuest, electionController.login);
 router.get('/register', ensureGuest, electionController.register);
 router.get('/logout', ensureAuthenticated, electionController.logout);
 router.get('/secret', ensureAuthenticated, electionController.secret);
-router.get('/status', ensureAuthenticated, electionController.status)
+router.get('/status', ensureAuthenticated, electionController.status);
 /* *** POST ENDPOINTS *** */
 router.post('/register', electionController.postRegister);
 router.post('/login', electionController.postLogin);

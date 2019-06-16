@@ -1,20 +1,30 @@
 <% include ../partials/header %>
 <div class="col-md-6 mx-auto">
 
+
+<% if (isadmin) { %>
+       <h1 ><%= status %></h1>
+          <div id="app" class="container text-center" style="background-color: white;">
+          <% for(var i = 0; i < party.length; ++i) {%>
+          <br>        
+            <%=party[i].name + ' with ' + party[i].vote + ' votes' %><% } %>
+
+
+          <div id="piechart">
+          </div>
+    <% } else { %>
+    
+      
+   <h2 class="text-center mt-4">Only admin can check status</h2>
+    <% } %>
+
       
 			<div class="container mt-5 class="text-center"">
       
 
-			    <h1 ><%= status %></h1>
-			    <div id="app" class="container text-center" style="background-color: white;">
-			    <% for(var i = 0; i < party.length; ++i) {%>
-			  	<br>        
-         		<%=party[i].name + ' with ' + party[i].vote + ' votes' %><% } %>
-
-
-			  	<div id="piechart">
-			  	</div>
+			   
           <a href="/" class="logout">Back to Home</a>
+          <a href="/auth/logout" class="logout">Logout</a>
 		</div>
 			    
 			    
