@@ -9,12 +9,62 @@
       <div class="col-4"><a class="btn btn-primary" href="/auth/login">Vote</a></div>
 
       <div class="col-4"><a class="btn btn-primary" href="/auth/status">Status</a></div>
-
-
-
-      
-      
     </div>
   </div>
+  <div>
+    <div id="wrapper">
+      <div id="location">
+        <h2>Its a Lovely Day in <span id="currentLocation"></span> to vote ! so lets vote</h2>
+      </div>
+      <!-- Other weather data -->
+      <div id="parameters">
+        <ul>
+        
+        	<li>Temperature</li>
+        	<li>Current Weather</li>
+          <li>Wind</li>
+          <li>Clouds</li>
+          <li>Humidity</li>
+          <li>Pressure</li>
+        </ul>
+        <!-- API Current Data -->
+        <ul>
+          	
+    	<li id="currentTemp"></li>
+    	<li id="currentWeather"></li>
+          <li id="wind"></li>
+          <li id="cloud"></li>
+          <li id="humidity"></li>
+          <li id="pressure"></li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+  <script>
+  var weather = <%- weather %>;
+  function getWeatherData(weather) {
+    var userWeather = weather;
+    userWeather.main.temp = userWeather.main.temp - 273.15;
+     currentTemperature = userWeather.main.temp;         
+      document.getElementById("currentLocation").innerHTML =
+        'jaipur';
+    document.getElementById("currentWeather").innerHTML =
+      userWeather.weather[0].description;
+    document.getElementById("currentTemp").innerHTML =
+      userWeather.main.temp + " &#176;C";
+    document.getElementById("cloud").innerHTML =
+      userWeather.clouds.all + "%";
+    document.getElementById("wind").innerHTML =
+      userWeather.wind.speed + " m/sec";
+    document.getElementById("humidity").innerHTML =
+      userWeather.main.humidity + "%";
+    document.getElementById("pressure").innerHTML =
+      userWeather.main.pressure + " hPa";           
+  }
+  getWeatherData(weather);
+  </script>
 <% include partials/footer %>
 

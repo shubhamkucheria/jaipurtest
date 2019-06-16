@@ -4,7 +4,7 @@ const passport = require('passport');
 const User = require('../models/User');
 const Vote = require('../models/Vote');
 const request = require('request');
-const {WEATHER_URL_KEY} = require('../config/');
+const {WEATHER_URL_KEY, WEATHER_URL} = require('../config/');
 
 module.exports = {
   /* *** GET ENDPOINTS *** */
@@ -122,5 +122,19 @@ module.exports = {
      successRedirect: '/auth/secret',
      failureRedirect: '/auth/login'
    })(req, res, next);
- } // Finish
+ },
+ weather: (req, res) => {
+   
+    let city = 'jaipur';
+    let weatherUrl = `${WEATHER_URL}?q=${city}&appid=${WEATHER_URL_KEY}`;
+
+    request(weatherUrl, function (err, response, body) {
+      if(err){
+        console.log('error:', error);
+      } else {
+        console.log('body:', body);
+        res.render('index', {title: 'Jaipur Assignment - Basic Voting', weather: body});    
+      }
+    });
+  }, // Finish
 };
