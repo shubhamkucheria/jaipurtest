@@ -67,7 +67,7 @@ module.exports = {
   },
   secret: (req, res) => {
     console.log('coming to secret page = ', req.user.voted );    
-    res.render('auth/secret', { alreadyVoted: req.user.voted, isadmin: req.user.isadmin})
+    res.render('auth/secret', { alreadyVoted: req.user.voted, isadmin: req.user.isadmin, username: req.user.name})
   },
   /* *** POST ENDPOINTS *** */
   postRegister: (req, res) => {
