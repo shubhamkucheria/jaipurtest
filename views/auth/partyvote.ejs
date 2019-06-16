@@ -3,55 +3,37 @@
 
       
 			<div class="container mt-5 class="text-center"">
+      
+
 			    <h1 ><%= status %></h1>
-			    <button onclick="getYo(<%= status %>)">Check Status</button>
 			    <div id="app" class="container text-center" style="background-color: white;">
 			    <% for(var i = 0; i < party.length; ++i) {%>
 			  	<br>        
          		<%=party[i].name + ' with ' + party[i].vote + ' votes' %><% } %>
+
+
 			  	<div id="piechart">
 			  	</div>
+          <a href="/" class="logout">Back to Home</a>
 		</div>
 			    
 			    
          		    
-			    <a href="/" class="logout">Back to Home</a>
+			    
       </div>
       <script>
-      var data = [];
-      function getPercent(val, total) {
-      	return (val/total)*100;
-      }
+      var party = <%- JSON.stringify(party) %>
+      console.log(party);
+      total = 0;
+      party.forEach(item => {
+        total = total+item.vote;
+      });
 
-      function getYo(val) {
-      	console.log('vallllll', val);
-      }
-
-
-      function getTotal (partyData) {
-		let result = partyData.reduce(
-		  (a, c) => (Object.keys(c).forEach(k => (a[k] = (a[k] || 0) + c[k])), a), {}
-		);
-		return result.vote;
-      }
-
-
-      function setData(partyData) {
-      	var total = getTotal(partyData);
-	      partyData.forEach(item => {
-	      	let tempData = [];
-	      	tempData.push(item.name);
-	      	tempData.push(getPercent(item.vote, total))
-			data.push(tempData);
-	      });
-
-      
-		// data = [
-		//   ['CONGRESS', 50],
-		//   ['BJP', 30],
-		//   ['AAP', 20]
-		// ];
-      } 
+      var data = [
+  [test[0].name, ((test[0].vote/total)*100).toFixed(1)],
+  [test[1].name, ((test[1].vote/total)*100).toFixed(1)],
+  [test[2].name, ((test[2].vote/total)*100).toFixed(1)]
+];
 
 var chart = c3.generate({
     bindto: '#piechart',
@@ -73,7 +55,7 @@ var chart = c3.generate({
       
       d3Pie = d3.select('.c3-chart-arcs');
       pieSize = d3Pie.node().getBBox();
-      pieTransform = d3.transform(d3Pie.attr("transform"));
+      pieTransform = d3.transform(d3Pie.attr("transform")); // credit : http://stackoverflow.com/questions/20340263/d3-retrieve-and-add-to-current-selections-attribute-value
 
       // MODIFY PIE POSITION
       var posX = 0+pieSize.width/1.5;
@@ -130,5 +112,5 @@ var legendTitle = d3legend.append('text')
   .text(function(d, i){
     return d[0];
   });    
-</script>
+      </script>
 <% include ../partials/footer %>

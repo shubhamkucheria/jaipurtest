@@ -63,6 +63,7 @@ module.exports = {
   },
   /* *** POST ENDPOINTS *** */
   postRegister: (req, res) => {
+    console.log('postRegister');
     let errors = [];
 
     if (req.body.password != req.body.rpassword)
@@ -108,6 +109,7 @@ module.exports = {
       }
   },
   postLogin: (req, res, next) => {
+    console.log('postLOgin');
     passport.authenticate('local', {
      successRedirect: '/auth/secret',
      failureRedirect: '/auth/login'
