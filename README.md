@@ -49,7 +49,5 @@ even password saved in db in encrypted way.
 
 **Shubham Kucheria**
 
-## Why
 
-* Application specially made for my jaipur assignment
 
