@@ -23,18 +23,16 @@
       </div>
       <script>
       var party = <%- JSON.stringify(party) %>
-      console.log(party);
       total = 0;
       party.forEach(item => {
         total = total+item.vote;
       });
 
       var data = [
-  [test[0].name, ((test[0].vote/total)*100).toFixed(1)],
-  [test[1].name, ((test[1].vote/total)*100).toFixed(1)],
-  [test[2].name, ((test[2].vote/total)*100).toFixed(1)]
+  [party[0].name, ((party[0].vote/total)*100).toFixed(1)],
+  [party[1].name, ((party[1].vote/total)*100).toFixed(1)],
+  [party[2].name, ((party[2].vote/total)*100).toFixed(1)]
 ];
-
 var chart = c3.generate({
     bindto: '#piechart',
     data: {
@@ -50,9 +48,7 @@ var chart = c3.generate({
       }
     },
     onrendered: function(){
-      var self = this;
-      console.log(self)
-      
+      var self = this;      
       d3Pie = d3.select('.c3-chart-arcs');
       pieSize = d3Pie.node().getBBox();
       pieTransform = d3.transform(d3Pie.attr("transform")); // credit : http://stackoverflow.com/questions/20340263/d3-retrieve-and-add-to-current-selections-attribute-value
@@ -101,7 +97,7 @@ var legendValue = d3legend.append('text')
   .attr('class', 'custom-legend-value')
   .attr('x', 50)
   .text(function(d, i){
-    return (d[1]/100)*100 + '%';
+    return ((d[1]/100)*100).toFixed(1) + '%';
   });
 
 var legendTitle = d3legend.append('text')
